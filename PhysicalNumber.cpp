@@ -154,31 +154,31 @@ namespace ariel {
     std::ostream& operator<<(std::ostream& os, const PhysicalNumber& a){
         switch (a._type) {
             case KM:
-                os<<a._num<<"[KM]";
+                os<<a._num<<"[km]";
                 break;
             case M:
-                os<<a._num<<"[M]";
+                os<<a._num<<"[m]";
                 break;
             case CM:
-                os<<a._num<<"[CM]";
+                os<<a._num<<"[cm]";
                 break;
             case HOUR:
-                os<<a._num<<"[HOUR]";
+                os<<a._num<<"[hour]";
                 break;
             case MIN:
-                os<<a._num<<"[MIN]";
+                os<<a._num<<"[min]";
                 break;
             case SEC:
-                os<<a._num<<"[SEC]";
+                os<<a._num<<"[sec]";
                 break;
             case TON:
-                os<<a._num<<"[TON]";
+                os<<a._num<<"[ton]";
                 break;
             case KG:
-                os<<a._num<<"[KG]";
+                os<<a._num<<"[kg]";
                 break;
             default:
-                os<<a._num<<"[G]";
+                os<<a._num<<"[g]";
                 break;
         }
         return os;
