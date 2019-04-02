@@ -8,6 +8,9 @@
 
 #include "PhysicalNumber.h"
 #include "Unit.h"
+#include <string>
+#include <sstream>
+#include <string.h>
 using namespace ariel;
 bool PhysicalNumber::checkType(const PhysicalNumber &a){
     if(_type>=0 && _type<=2 && a._type>=0 && a._type<=2) return true;
@@ -15,7 +18,8 @@ bool PhysicalNumber::checkType(const PhysicalNumber &a){
     else if(_type>=6 && _type<=8 && a._type>=6 && a._type<=8) return true;
     return false;
 }
-
+int PhysicalNumber::get_num(){return _num;}
+Unit PhysicalNumber::get_type(){return _type;}
 double PhysicalNumber::Diff(const PhysicalNumber &a){
     if(checkType(a)){
         switch (_type) {
@@ -183,11 +187,39 @@ namespace ariel {
         }
         return os;
     }
+    double string_double(std::string &s){
+        char* str=(char*)malloc(s.length());
+        for (int i=0; i<s.length(); i++) {
+            str[i]=s[i];
+        }
+        double a=atof(str);
+        free(str);
+        return a;
+    }
+    int string_type(std::string &s){
+        char* str=(char*)malloc(s.length()-1);
+        for (int i=0; i<s.length()+1; i++) {
+            str[i]=s[i];
+        }
+        if(strstr(str, "km")) return 0;
+        else if(strstr(str, "m")) return 1;
+        else if(strstr(str, "cm")) return 2;
+        else if(strstr(str, "hour")) return 3;
+        else if(strstr(str, "min")) return 4;
+        else if(strstr(str, "sec")) return 5;
+        else if(strstr(str, "ton")) return 6;
+        else if(strstr(str, "kg")) return 7;
+        free(str);
+        return 8;
+    }
     std::istream& operator>>(std::istream& is, PhysicalNumber& c){
-        is>>c._num;
-        unsigned int unit = 0;
-        is>>unit;
-        c._type=(Unit)unit;
+        std::string input,s;
+        is>>input;
+        std::istringstream iss(input);
+        getline( iss, s, '[' );
+        c._num=string_double(s);
+        getline( iss, s, ']' );
+        c._type=(Unit)string_type(s);
         return is;
     }
 }
