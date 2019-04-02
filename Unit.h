@@ -10,6 +10,6 @@
 #define Unit_h
 
 namespace ariel{
-    enum Unit{km,m,cm,hour,min,sec,ton,kg,g};
+    enum Unit{KM,M,CM,HOUR,MIN,SEC,TON,KG,G};
 };
 #endif /* Unit_h */

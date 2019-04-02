@@ -19,49 +19,49 @@ bool PhysicalNumber::checkType(const PhysicalNumber &a){
 double PhysicalNumber::Diff(const PhysicalNumber &a){
     if(checkType(a)){
         switch (_type) {
-            case km:
-                if(a._type==km) return 1;
-                else if (a._type==m) return 0.001;
+            case KM:
+                if(a._type==KM) return 1;
+                else if (a._type==M) return 0.001;
                 else return 0.00001;
                 break;
-            case m:
-                if(a._type==km) return 1000;
-                else if (a._type==m) return 1;
+            case M:
+                if(a._type==KM) return 1000;
+                else if (a._type==M) return 1;
                 else return 0.01;
                 break;
-            case cm:
-                if(a._type==km) return 1000*100;
-                else if (a._type==m) return 100;
+            case CM:
+                if(a._type==KM) return 1000*100;
+                else if (a._type==M) return 100;
                 else return 1;
                 break;
-            case hour:
-                if(a._type==hour) return 1;
-                else if (a._type==min) return 0.0166666667;
+            case HOUR:
+                if(a._type==HOUR) return 1;
+                else if (a._type==MIN) return 0.0166666667;
                 else return 0.0002777778;
                 break;
-            case min:
-                if(a._type==hour) return 60;
-                else if (a._type==min) return 1;
+            case MIN:
+                if(a._type==HOUR) return 60;
+                else if (a._type==MIN) return 1;
                 else return 0.0166666667;
                 break;
-            case sec:
-                if(a._type==hour) return 60*60;
-                else if (a._type==min) return 60;
+            case SEC:
+                if(a._type==HOUR) return 60*60;
+                else if (a._type==MIN) return 60;
                 else return 1;
                 break;
-            case ton:
-                if(a._type==ton) return 1;
-                else if (a._type==kg) return 0.001;
+            case TON:
+                if(a._type==TON) return 1;
+                else if (a._type==KG) return 0.001;
                 else return 0.00001;
                 break;
-            case kg:
-                if(a._type==ton) return 1000;
-                else if (a._type==kg) return 1;
+            case KG:
+                if(a._type==TON) return 1000;
+                else if (a._type==KG) return 1;
                 else return 1000;
                 break;
-            case g:
-                if(a._type==ton) return 1000*1000;
-                else if (a._type==kg) return 1000;
+            case G:
+                if(a._type==TON) return 1000*1000;
+                else if (a._type==KG) return 1000;
                 else return 1;
                 break;
             default:
@@ -106,46 +106,40 @@ const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
 }
 const bool PhysicalNumber::operator==(const PhysicalNumber& a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num==Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num==Diff(a)*a._num)
+            return true;
     return false;
 }
 const bool PhysicalNumber::operator<(const PhysicalNumber &a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num<Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num<Diff(a)*a._num)
+            return true;
     return false;
 }
 const bool PhysicalNumber::operator>( const PhysicalNumber &a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num>Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num>Diff(a)*a._num)
+            return true;
     return false;
 }
 
 const bool PhysicalNumber::operator<=(const PhysicalNumber &a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num<=Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num<=Diff(a)*a._num)
+            return true;
     return false;
 }
 const bool PhysicalNumber::operator>=(const PhysicalNumber &a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num>=Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num>=Diff(a)*a._num)
+            return true;
     return false;
 }
 const bool PhysicalNumber::operator!=(const PhysicalNumber &a){
-    if(!checkType(a))
-        throw "can't compare!";
-    if(_num!=Diff(a)*a._num)
-        return true;
+    if(checkType(a))
+        if(_num!=Diff(a)*a._num)
+            return true;
     return false;
 }
 PhysicalNumber& PhysicalNumber::operator++(){
@@ -159,28 +153,28 @@ PhysicalNumber& PhysicalNumber::operator--(){
 namespace ariel {
     std::ostream& operator<<(std::ostream& os, const PhysicalNumber& a){
         switch (a._type) {
-            case km:
+            case KM:
                 os<<a._num<<"[km]";
                 break;
-            case m:
+            case M:
                 os<<a._num<<"[m]";
                 break;
-            case cm:
+            case CM:
                 os<<a._num<<"[cm]";
                 break;
-            case hour:
+            case HOUR:
                 os<<a._num<<"[hour]";
                 break;
-            case min:
+            case MIN:
                 os<<a._num<<"[min]";
                 break;
-            case sec:
+            case SEC:
                 os<<a._num<<"[sec]";
                 break;
-            case ton:
+            case TON:
                 os<<a._num<<"[ton]";
                 break;
-            case kg:
+            case KG:
                 os<<a._num<<"[kg]";
                 break;
             default:
@@ -190,11 +184,11 @@ namespace ariel {
         return os;
     }
     std::istream& operator>>(std::istream& is, PhysicalNumber& c){
-        std::string s;
-        is>>s;
-        
+        is>>c._num;
+        unsigned int unit = 0;
+        is>>unit;
+        c._type=(Unit)unit;
         return is;
     }
 }
-
 
