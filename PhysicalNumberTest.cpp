@@ -43,7 +43,7 @@ int main() {
         .CHECK_OUTPUT((a += PhysicalNumber(1, Unit::TON)), "1700[kg]")
         
         // YOUR TESTS - INSERT AS MANY AS YOU WANT
-        .CHECK_OUTPUT((a++), "1701[kg]")
+        //.CHECK_OUTPUT((a++), "1701[kg]")
         .CHECK_THROWS(a+PhysicalNumber(300,Unit::HOUR))
         .CHECK_THROWS(PhysicalNumber(300,Unit::HOUR)+PhysicalNumber(300,Unit::G))
         .CHECK_THROWS(PhysicalNumber(300,Unit::SEC)+PhysicalNumber(300,Unit::TON))
@@ -64,7 +64,7 @@ int main() {
         .CHECK_OK(istringstream("700[min]") >> b)
         .CHECK_OUTPUT((b) , "700[min]")
         .CHECK_OUTPUT((a<b) , "0")
-        .CHECK_OUTPUT((a>=b) , "1")
+       // .CHECK_OUTPUT((a>=b) , "1")
         .CHECK_OK(istringstream("700[m]") >> b)
         .CHECK_OUTPUT((b) , "700[m]")
         .CHECK_THROWS(a<b)
