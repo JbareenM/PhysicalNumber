@@ -110,40 +110,46 @@ const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
 }
 const bool PhysicalNumber::operator==(const PhysicalNumber& a){
-    if(checkType(a))
-        if(_num==Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num==(Diff(a)*a._num))
+        return true;
     return false;
 }
 const bool PhysicalNumber::operator<(const PhysicalNumber &a){
-    if(checkType(a))
-        if(_num<Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num<(Diff(a)*a._num))
+        return true;
     return false;
 }
 const bool PhysicalNumber::operator>( const PhysicalNumber &a){
-    if(checkType(a))
-        if(_num>Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num>(Diff(a)*a._num))
+        return true;
     return false;
 }
 
 const bool PhysicalNumber::operator<=(const PhysicalNumber &a){
-    if(checkType(a))
-        if(_num<=Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num<=(Diff(a)*a._num))
+        return true;
     return false;
 }
 const bool PhysicalNumber::operator>=(const PhysicalNumber &a){
-    if(checkType(a))
-        if(_num>=Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num>=(Diff(a)*a._num))
+        return true;
     return false;
 }
 const bool PhysicalNumber::operator!=(const PhysicalNumber &a){
-    if(checkType(a))
-        if(_num!=Diff(a)*a._num)
-            return true;
+    if(!checkType(a))
+        throw "you're trying to comparee two different types!";
+    if(_num!=(Diff(a)*a._num))
+        return true;
     return false;
 }
 PhysicalNumber& PhysicalNumber::operator++(){
@@ -154,8 +160,8 @@ PhysicalNumber& PhysicalNumber::operator--(){
     _num--;
     return *this;
 }
-namespace ariel {
-    std::ostream& operator<<(std::ostream& os, const PhysicalNumber& a){
+
+    std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber& a){
         switch (a._type) {
             case KM:
                 os<<a._num<<"[km]";
@@ -201,18 +207,20 @@ namespace ariel {
         for (int i=0; i<s.length()+1; i++) {
             str[i]=s[i];
         }
-        if(strstr(str, "km")) return 0;
-        else if(strstr(str, "m")) return 1;
-        else if(strstr(str, "cm")) return 2;
-        else if(strstr(str, "hour")) return 3;
-        else if(strstr(str, "min")) return 4;
-        else if(strstr(str, "sec")) return 5;
-        else if(strstr(str, "ton")) return 6;
-        else if(strstr(str, "kg")) return 7;
+        int res=0;
+        if(strstr(str, "km")) res=0;
+        else if(strstr(str, "min")) res=4;
+        else if(strstr(str, "m")) res=1;
+        else if(strstr(str, "cm")) res=2;
+        else if(strstr(str, "hour")) res=3;
+        else if(strstr(str, "sec")) res=5;
+        else if(strstr(str, "ton")) res=6;
+        else if(strstr(str, "kg")) res=7;
+        else res=8;
         free(str);
-        return 8;
+        return res;
     }
-    std::istream& operator>>(std::istream& is, PhysicalNumber& c){
+std::istream& ariel::operator>>(std::istream& is, PhysicalNumber& c){
         std::string input,s;
         is>>input;
         std::istringstream iss(input);
@@ -222,7 +230,7 @@ namespace ariel {
         c._type=(Unit)string_type(s);
         return is;
     }
-}
+
 
 PhysicalNumber& PhysicalNumber::operator++ (int){
     ++(*this);
