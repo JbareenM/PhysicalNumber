@@ -224,3 +224,11 @@ namespace ariel {
     }
 }
 
+PhysicalNumber& PhysicalNumber::operator++ (int){
+    ++(*this);
+    return *this;
+}
+PhysicalNumber& PhysicalNumber::operator--(int){
+    --(*this);
+    return *this;
+}
