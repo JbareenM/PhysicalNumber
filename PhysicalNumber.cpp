@@ -11,6 +11,8 @@
 #include <string>
 #include <sstream>
 #include <string.h>
+#include<vector>
+#include <map>
 using namespace ariel;
 bool PhysicalNumber::checkType(const PhysicalNumber &a){
     if(_type>=0 && _type<=2 && a._type>=0 && a._type<=2) return true;
@@ -220,12 +222,9 @@ int string_type(std::string &s){
     free(str);
     return res;
 }
-using namespace std;
-#include<vector>
-#include <map>
-Unit getUnit(const string s)
+Unit getUnit(const std::string s)
 {
-    static map<string, Unit> string2unit{
+    static std::map<std::string, Unit> string2unit{
         {"CM", ariel::CM},
         {"M", ariel::M},
         {"KM", ariel::KM},
@@ -242,23 +241,23 @@ Unit getUnit(const string s)
     {
         return x->second;
     }
-    throw invalid_argument(s);
+    throw std::invalid_argument(s);
 }
 istream &ariel::operator>>(istream &in, PhysicalNumber &pnum)
 {
-    string a;
+    std::string a;
     in >> a;
     if (a.find("]") == -1 || a.find("[") == -1 || a.find("[]")!=-1)
     {
         return in;
     }
     a = a.substr(0, a.length() - 1);
-    stringstream ss(a);
-    vector<string> result;
+    std::stringstream ss(a);
+    std::vector<std::string> result;
     
     while (ss.good())
     {
-        string substr;
+        std::string substr;
         getline(ss, substr, '[');
         result.push_back(substr);
     }
@@ -273,7 +272,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &pnum)
         return in;
     }
     Unit u =Unit::CM;
-    const string unt = result[1];
+    const std::string unt = result[1];
     try{
         u = getUnit(unt);
     }
