@@ -161,75 +161,129 @@ PhysicalNumber& PhysicalNumber::operator--(){
     return *this;
 }
 
-    std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber& a){
-        switch (a._type) {
-            case KM:
-                os<<a._num<<"[km]";
-                break;
-            case M:
-                os<<a._num<<"[m]";
-                break;
-            case CM:
-                os<<a._num<<"[cm]";
-                break;
-            case HOUR:
-                os<<a._num<<"[hour]";
-                break;
-            case MIN:
-                os<<a._num<<"[min]";
-                break;
-            case SEC:
-                os<<a._num<<"[sec]";
-                break;
-            case TON:
-                os<<a._num<<"[ton]";
-                break;
-            case KG:
-                os<<a._num<<"[kg]";
-                break;
-            default:
-                os<<a._num<<"[g]";
-                break;
-        }
-        return os;
+std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber& a){
+    switch (a._type) {
+        case KM:
+            os<<a._num<<"[km]";
+            break;
+        case M:
+            os<<a._num<<"[m]";
+            break;
+        case CM:
+            os<<a._num<<"[cm]";
+            break;
+        case HOUR:
+            os<<a._num<<"[hour]";
+            break;
+        case MIN:
+            os<<a._num<<"[min]";
+            break;
+        case SEC:
+            os<<a._num<<"[sec]";
+            break;
+        case TON:
+            os<<a._num<<"[ton]";
+            break;
+        case KG:
+            os<<a._num<<"[kg]";
+            break;
+        default:
+            os<<a._num<<"[g]";
+            break;
     }
-    double string_double(std::string &s){
-        char* str=(char*)malloc(s.length());
-        for (int i=0; i<s.length(); i++) {
-            str[i]=s[i];
-        }
-        double a=atof(str);
-        free(str);
-        return a;
+    return os;
+}
+double string_double(std::string &s){
+    char* str=(char*)malloc(s.length());
+    for (int i=0; i<s.length(); i++) {
+        str[i]=s[i];
     }
-    int string_type(std::string &s){
-        char* str=(char*)malloc(s.length()-1);
-        for (int i=0; i<s.length()+1; i++) {
-            str[i]=s[i];
-        }
-        int res=0;
-        if(strstr(str, "km")) res=0;
-        else if(strstr(str, "min")) res=4;
-        else if(strstr(str, "m")) res=1;
-        else if(strstr(str, "cm")) res=2;
-        else if(strstr(str, "hour")) res=3;
-        else if(strstr(str, "sec")) res=5;
-        else if(strstr(str, "ton")) res=6;
-        else if(strstr(str, "kg")) res=7;
-        else res=8;
-        free(str);
-        return res;
+    double a=atof(str);
+    free(str);
+    return a;
+}
+int string_type(std::string &s){
+    char* str=(char*)malloc(s.length()-1);
+    for (int i=0; i<s.length()+1; i++) {
+        str[i]=s[i];
     }
-std::istream& ariel::operator>>(std::istream& is, PhysicalNumber& c){
-        std::string input,s;
-        is>>input;
-        std::istringstream iss(input);
-        getline( iss, s, '[' );
-        c._num=string_double(s);
-        getline( iss, s, ']' );
-        c._type=(Unit)string_type(s);
-        return is;
+    int res=0;
+    if(strstr(str, "km")) res=0;
+    else if(strstr(str, "min")) res=4;
+    else if(strstr(str, "m")) res=1;
+    else if(strstr(str, "cm")) res=2;
+    else if(strstr(str, "hour")) res=3;
+    else if(strstr(str, "sec")) res=5;
+    else if(strstr(str, "ton")) res=6;
+    else if(strstr(str, "kg")) res=7;
+    else res=8;
+    free(str);
+    return res;
+}
+using namespace std;
+#include<vector>
+#include <map>
+Unit getUnit(const string s)
+{
+    static map<string, Unit> string2unit{
+        {"CM", ariel::CM},
+        {"M", ariel::M},
+        {"KM", ariel::KM},
+        {"SEC", ariel::SEC},
+        {"MIN", ariel::MIN},
+        {"HOUR", ariel::HOUR},
+        {"G", ariel::G},
+        {"KG", ariel::KG},
+        {"TON", ariel::TON},
+        
+    };
+    auto x = string2unit.find(s);
+    if (x != end(string2unit))
+    {
+        return x->second;
     }
+    throw invalid_argument(s);
+}
+istream &ariel::operator>>(istream &in, PhysicalNumber &pnum)
+{
+    string a;
+    in >> a;
+    if (a.find("]") == -1 || a.find("[") == -1 || a.find("[]")!=-1)
+    {
+        return in;
+    }
+    a = a.substr(0, a.length() - 1);
+    stringstream ss(a);
+    vector<string> result;
+    
+    while (ss.good())
+    {
+        string substr;
+        getline(ss, substr, '[');
+        result.push_back(substr);
+    }
+    double val=0;
+    try
+    {
+        val = stod(result[0]);
+        transform(result[1].begin(), result[1].end(), result[1].begin(), ::toupper);
+    }
+    catch(...)
+    {
+        return in;
+    }
+    Unit u =Unit::CM;
+    const string unt = result[1];
+    try{
+        u = getUnit(unt);
+    }
+    catch(...){
+        return in;
+    }
+    
+    pnum = PhysicalNumber(val, u);
+    return in;
+}
 
 
 PhysicalNumber& PhysicalNumber::operator++ (int){
