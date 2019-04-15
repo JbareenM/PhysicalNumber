@@ -10,9 +10,11 @@
 #include "Unit.h"
 #include <string>
 #include <sstream>
-#include <string.h>
 #include<vector>
 #include <map>
+#include <iterator>
+#include <vector>
+#include <algorithm>
 using namespace ariel;
 bool PhysicalNumber::checkType(const PhysicalNumber &a){
     if(_type>=0 && _type<=2 && a._type>=0 && a._type<=2) return true;
@@ -195,36 +197,9 @@ std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber& a){
     }
     return os;
 }
-double string_double(std::string &s){
-    char* str=(char*)malloc(s.length());
-    for (int i=0; i<s.length(); i++) {
-        str[i]=s[i];
-    }
-    double a=atof(str);
-    free(str);
-    return a;
-}
-int string_type(std::string &s){
-    char* str=(char*)malloc(s.length()-1);
-    for (int i=0; i<s.length()+1; i++) {
-        str[i]=s[i];
-    }
-    int res=0;
-    if(strstr(str, "km")) res=0;
-    else if(strstr(str, "min")) res=4;
-    else if(strstr(str, "m")) res=1;
-    else if(strstr(str, "cm")) res=2;
-    else if(strstr(str, "hour")) res=3;
-    else if(strstr(str, "sec")) res=5;
-    else if(strstr(str, "ton")) res=6;
-    else if(strstr(str, "kg")) res=7;
-    else res=8;
-    free(str);
-    return res;
-}
-Unit getUnit(const std::string s)
-{
-    static std::map<std::string, Unit> string2unit{
+
+Unit get_type(const std::string s){
+    static std::map<std::string, Unit> string_type{
         {"CM", ariel::CM},
         {"M", ariel::M},
         {"KM", ariel::KM},
@@ -236,52 +211,46 @@ Unit getUnit(const std::string s)
         {"TON", ariel::TON},
         
     };
-    auto x = string2unit.find(s);
-    if (x != end(string2unit))
-    {
+    auto x = string_type.find(s);
+    if (x != end(string_type)){
         return x->second;
     }
     throw std::invalid_argument(s);
 }
-istream &ariel::operator>>(istream &in, PhysicalNumber &pnum)
+istream &ariel::operator>>(istream &is, PhysicalNumber &a)
 {
-    std::string a;
-    in >> a;
-    if (a.find("]") == -1 || a.find("[") == -1 || a.find("[]")!=-1)
-    {
-        return in;
+    std::string str;
+    is >> str;
+    if (str.find("]") == -1 || str.find("[") == -1 || str.find("[]")!=-1){
+        return is;
     }
-    a = a.substr(0, a.length() - 1);
-    std::stringstream ss(a);
+    str = str.substr(0, str.length() - 1);
+    std::stringstream ss(str);
     std::vector<std::string> result;
     
-    while (ss.good())
-    {
+    while (ss.good()){
         std::string substr;
         getline(ss, substr, '[');
         result.push_back(substr);
     }
     double val=0;
-    try
-    {
-        val = stod(result[0]);
-        transform(result[1].begin(), result[1].end(), result[1].begin(), ::toupper);
-    }
-    catch(...)
-    {
-        return in;
-    }
-    Unit u =Unit::CM;
-    const std::string unt = result[1];
     try{
-        u = getUnit(unt);
+        val = stod(result[0]);
+        std::transform(result[1].begin(), result[1].end(), result[1].begin(), ::toupper);
     }
     catch(...){
-        return in;
+        return is;
     }
-    
-    pnum = PhysicalNumber(val, u);
-    return in;
+    Unit un =Unit::CM;
+    const std::string type = result[1];
+    try{
+        un = get_type(type);
+    }
+    catch(...){
+        return is;
+    }
+    a = PhysicalNumber(val, un);
+    return is;
 }
 
 
