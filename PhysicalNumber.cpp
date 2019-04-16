@@ -128,13 +128,17 @@ const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber& a) const{
 PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber& a){
     if(!checkType(a))
         throw "you're trying to add two different types!";
-    _num+=(Diff(a)*a._num);
+    double val=::Diff(*(this))*_num +::Diff(a)*a._num;
+    val/=::Diff(*(this));
+    _num=val;
     return *this;
 }
 PhysicalNumber& PhysicalNumber::operator-=(const PhysicalNumber& a){
     if(!checkType(a))
         throw "you're trying to add two different types!";
-    _num-=(Diff(a)*a._num);
+    double val=::Diff(*(this))*_num - ::Diff(a)*a._num;
+    val/=::Diff(*(this));
+    _num=val;
     return *this;
 }
 PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber& a){
