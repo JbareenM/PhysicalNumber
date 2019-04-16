@@ -17,13 +17,12 @@ namespace ariel{
     class PhysicalNumber {
     private:
         double _num;
-        double Diff(const PhysicalNumber &a) const;
         Unit _type;
-        bool checkType(const PhysicalNumber &a) const;
-        
         
     public:
-        int get_num() const;
+        double Diff(const PhysicalNumber &a) const;
+        bool checkType(const PhysicalNumber &a) const;
+        double get_num() const;
         Unit get_type() const;
         PhysicalNumber(double numb,Unit type):_num(numb),_type(type){};
         const PhysicalNumber operator+(const PhysicalNumber& a) const;
@@ -37,14 +36,14 @@ namespace ariel{
         const PhysicalNumber operator+() const ;
         const PhysicalNumber operator-() const ;
         
-        const bool operator==(const PhysicalNumber &a) const;
-        const bool operator<(const PhysicalNumber &a) const;
+        friend bool operator==(const PhysicalNumber &a,const PhysicalNumber &b);
+        friend bool operator<(const PhysicalNumber &a,const PhysicalNumber &b);
         
-        const bool operator>( const PhysicalNumber &a) const;
+        friend bool operator>( const PhysicalNumber &a,const PhysicalNumber &b);
         
-        const bool operator<=(const PhysicalNumber &a) const;
-        const bool operator>=(const PhysicalNumber &a) const;
-        const bool operator!=(const PhysicalNumber &a) const;
+        friend bool operator<=( const PhysicalNumber &a,const PhysicalNumber &b);
+        friend bool operator>=( const PhysicalNumber &a,const PhysicalNumber &b);
+        friend bool operator!=( const PhysicalNumber &a,const PhysicalNumber &b);
         
         const PhysicalNumber operator++ (int);
         const PhysicalNumber operator--(int);
