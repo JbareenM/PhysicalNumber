@@ -16,7 +16,6 @@
 #include <vector>
 #include <algorithm>
 using namespace ariel;
-
 bool PhysicalNumber::checkType(const PhysicalNumber &a) const{
     if(this->_type>=0 && this->_type<=2 && a._type>=0 && a._type<=2) return true;
     else if(this->_type>=3 && this->_type<=5 && a._type>=3 && a._type<=5) return true;
@@ -121,7 +120,9 @@ const PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& a) const{
 const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber& a) const{
     if(!checkType(a))
         throw "you're trying to add two different types!";
-    return PhysicalNumber(_num-Diff(a)*a._num,_type);
+    double val=::Diff(*(this))*_num-::Diff(a)*a._num;
+    val/=::Diff(*(this));
+    return PhysicalNumber(val,_type);
 }
 
 PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber& a){
