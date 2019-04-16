@@ -29,13 +29,13 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
         switch (_type) {
             case KM:
                 if(a._type==KM) return 1;
-                else if (a._type==M) return (double)1/1000;
+                else if (a._type==M) return 0.001;
                 else return 0.00001;
                 break;
             case M:
                 if(a._type==KM) return 1000;
                 else if (a._type==M) return 1;
-                else return (double)1/100;
+                else return 0.01;
                 break;
             case CM:
                 if(a._type==KM) return 1000*100;
@@ -44,13 +44,13 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
                 break;
             case HOUR:
                 if(a._type==HOUR) return 1;
-                else if (a._type==MIN) return (double)1/60;
-                else return (double)1/3600;
+                else if (a._type==MIN) return 0.016666666666667;
+                else return 0.000277777777778;
                 break;
             case MIN:
                 if(a._type==HOUR) return 60;
                 else if (a._type==MIN) return 1;
-                else return (double)1/60;
+                else return 0.016666666666667;
                 break;
             case SEC:
                 if(a._type==HOUR) return 60*60;
@@ -59,8 +59,8 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
                 break;
             case TON:
                 if(a._type==TON) return 1;
-                else if (a._type==KG) return (double)1/1000;
-                else return (double)(1/(1000*1000));
+                else if (a._type==KG) return 0.001;
+                else return 0.000001;
                 break;
             case KG:
                 if(a._type==TON) return 1000;
