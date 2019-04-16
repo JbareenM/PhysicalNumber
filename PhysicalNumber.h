@@ -18,10 +18,10 @@ namespace ariel{
     private:
         double _num;
         Unit _type;
-        
-    public:
         double Diff(const PhysicalNumber &a) const;
         bool checkType(const PhysicalNumber &a) const;
+        
+    public:
         double get_num() const;
         Unit get_type() const;
         PhysicalNumber(double numb,Unit type):_num(numb),_type(type){};
