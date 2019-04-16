@@ -154,32 +154,33 @@ const bool PhysicalNumber::operator==(const PhysicalNumber &a) const{
 const bool PhysicalNumber::operator<(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(_num<(Diff(a)*a._num))
+    if(::Diff(*(this))*_num<(::Diff(a)*a._num))
         return true;
     return false;
 }
 const bool PhysicalNumber::operator>(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(_num>(Diff(a)*a._num))
+    if(::Diff(*(this))*_num>(::Diff(a)*a._num))
         return true;
     return false;
 }
 const bool PhysicalNumber::operator<=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(_num<=(Diff(a)*a._num))
+    if(::Diff(*(this))*_num<=(::Diff(a)*a._num))
         return true;
     return false;
 }
 const bool PhysicalNumber::operator>=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(_num>=(Diff(a)*a._num))
+    if(::Diff(*(this))*_num>=(::Diff(a)*a._num))
         return true;
     return false;
 }
 const bool PhysicalNumber::operator!=(const PhysicalNumber &a) const{return !(*(this)==a);}
+
 PhysicalNumber& PhysicalNumber::operator++(){
     _num++;
     return *this;
