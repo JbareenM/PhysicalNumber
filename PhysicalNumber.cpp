@@ -254,11 +254,13 @@ istream &ariel::operator>>(istream &is, PhysicalNumber &a)
 }
 
 
-PhysicalNumber& PhysicalNumber::operator++ (int){
-    ++(*this);
-    return *this;
+const PhysicalNumber PhysicalNumber::operator++ (int){
+    PhysicalNumber a(*(this));
+    ++*(this);
+    return a;
 }
-PhysicalNumber& PhysicalNumber::operator--(int){
-    --(*this);
-    return *this;
+const PhysicalNumber PhysicalNumber::operator--(int){
+    PhysicalNumber a(*(this));
+    --*(this);
+    return a;
 }
