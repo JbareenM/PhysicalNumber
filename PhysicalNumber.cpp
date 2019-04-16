@@ -79,15 +79,115 @@ double PhysicalNumber::Diff(const PhysicalNumber &a){
     return 0;
 }
 
-const PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& a){
-    if(!checkType(a))
+const PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& a) const{
+    if(this->_group!=a._group)
         throw "you're trying to add two different types!";
-    return PhysicalNumber(_num+(Diff(a)*a._num),_type);
+    double res=a._num;
+    switch (_type) {
+        case KM:
+            if(a._type==KM) res*=1;
+            else if (a._type==M) res*=0.001;
+            else  res*=0.00001;
+            break;
+        case M:
+            if(a._type==KM) res*=1000;
+            else if (a._type==M) res*=1;
+            else res*=0.01;
+            break;
+        case CM:
+            if(a._type==KM) res*=1000*100;
+            else if (a._type==M) res*=100;
+            else res*=1;
+            break;
+        case HOUR:
+            if(a._type==HOUR) res*=1;
+            else if (a._type==MIN) res*=0.0166666667;
+            else res*=0.0002777778;
+            break;
+        case MIN:
+            if(a._type==HOUR) res*=60;
+            else if (a._type==MIN) res*=1;
+            else res*=0.0166666667;
+            break;
+        case SEC:
+            if(a._type==HOUR) res*=60*60;
+            else if (a._type==MIN) res*=60;
+            else res*=1;
+            break;
+        case TON:
+            if(a._type==TON) res*=1;
+            else if (a._type==KG) res*=0.001;
+            else res*=0.00001;
+            break;
+        case KG:
+            if(a._type==TON) res*=1000;
+            else if (a._type==KG) res*=1;
+            else res*=1000;
+            break;
+        case G:
+            if(a._type==TON) res*=1000*1000;
+            else if (a._type==KG) res*=1000;
+            else res*=1;
+            break;
+        default:
+            break;
+    }
+    return PhysicalNumber(_num+res,_type);
 }
-const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber& a){
-    if(!checkType(a))
+const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber& a) const{
+    if(this->_group!=a._group)
         throw "you're trying to add two different types!";
-    return PhysicalNumber(_num-Diff(a)*a._num,_type);
+    double res=a._num;
+    switch (_type) {
+        case KM:
+            if(a._type==KM) res*=1;
+            else if (a._type==M) res*=0.001;
+            else  res*=0.00001;
+            break;
+        case M:
+            if(a._type==KM) res*=1000;
+            else if (a._type==M) res*=1;
+            else res*=0.01;
+            break;
+        case CM:
+            if(a._type==KM) res*=1000*100;
+            else if (a._type==M) res*=100;
+            else res*=1;
+            break;
+        case HOUR:
+            if(a._type==HOUR) res*=1;
+            else if (a._type==MIN) res*=0.0166666667;
+            else res*=0.0002777778;
+            break;
+        case MIN:
+            if(a._type==HOUR) res*=60;
+            else if (a._type==MIN) res*=1;
+            else res*=0.0166666667;
+            break;
+        case SEC:
+            if(a._type==HOUR) res*=60*60;
+            else if (a._type==MIN) res*=60;
+            else res*=1;
+            break;
+        case TON:
+            if(a._type==TON) res*=1;
+            else if (a._type==KG) res*=0.001;
+            else res*=0.00001;
+            break;
+        case KG:
+            if(a._type==TON) res*=1000;
+            else if (a._type==KG) res*=1;
+            else res*=1000;
+            break;
+        case G:
+            if(a._type==TON) res*=1000*1000;
+            else if (a._type==KG) res*=1000;
+            else res*=1;
+            break;
+        default:
+            break;
+    }
+    return PhysicalNumber(_num-res,_type);
 }
 
 PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber& a){

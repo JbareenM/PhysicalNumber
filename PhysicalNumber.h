@@ -17,20 +17,26 @@ namespace ariel{
     class PhysicalNumber {
     private:
         double _num;
+        double Diff(const PhysicalNumber &a);
         Unit _type;
         bool checkType(const PhysicalNumber &a);
-        double Diff(const PhysicalNumber &a);
+        
         
     public:
         int get_num();
+        int _group;
         Unit get_type();
-        PhysicalNumber(double numb,Unit type):_num(numb),_type(type){};
-        const PhysicalNumber operator+(const PhysicalNumber& a);
-        const PhysicalNumber operator-(const PhysicalNumber& a);
+        PhysicalNumber(double numb,Unit type):_num(numb),_type(type){
+            if(type>=0 && type<=2 && type>=0 && type<=2) _group=1;
+            else if(type>=3 && type<=5 && type>=3 && type<=5) _group=2;
+            else if(type>=6 && type<=8 && type>=6 && type<=8) _group=3;
+        };
+        const PhysicalNumber operator+(const PhysicalNumber& a) const;
+        const PhysicalNumber operator-(const PhysicalNumber& a) const;
         
         PhysicalNumber& operator+=(const PhysicalNumber& a);
         PhysicalNumber& operator-=(const PhysicalNumber& a);
-
+        
         PhysicalNumber& operator=(const PhysicalNumber& a);
         
         const PhysicalNumber operator+() const ;

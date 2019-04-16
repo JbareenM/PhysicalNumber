@@ -1,3 +1,10 @@
+/**
+ * Examples of automatic tests for the exercise on physical numbers.
+ *
+ * @author Erel Segal-Halevi
+ * @since 2019-02
+ */
+
 #include <iostream>
 #include <sstream>
 using std::cout, std::endl, std::istringstream;
@@ -246,6 +253,7 @@ int main()
         .CHECK_OUTPUT((km -= met), "3.2947[km]")
         .CHECK_OUTPUT(km, "3.2947[km]")
         .CHECK_OK(istringstream("3.3[km]") >> km)
+        .CHECK_EQUAL(km != cm, true)
         .CHECK_EQUAL(km == cm, false)
         .CHECK_EQUAL(km >= cm, true)
         .CHECK_EQUAL(km <= cm, false)
@@ -324,6 +332,14 @@ int main()
         .CHECK_EQUAL(km >= PhysicalNumber(3, Unit::CM), true)
         .setname("unary")
         .CHECK_EQUAL(-met, PhysicalNumber(-7.4, Unit::M))
+        .setname("postfix++")
+        .CHECK_OUTPUT(cm++, "611[cm]")
+        .CHECK_OUTPUT(met++, "8.4[m]")
+        .CHECK_OUTPUT(km++, "8.3[km]")
+        .setname("postfix--")
+        .CHECK_OUTPUT(cm--, "610[cm]")
+        .CHECK_OUTPUT(met--, "7.4[m]")
+        .CHECK_OUTPUT(km--, "7.3[km]")
         .setname("++prefix")
         .CHECK_OUTPUT(++cm, "611[cm]")
         .CHECK_OUTPUT(++met, "8.4[m]")
