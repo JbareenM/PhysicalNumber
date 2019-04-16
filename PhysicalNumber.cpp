@@ -139,7 +139,7 @@ PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber& a){
     return *this;
 }
 const PhysicalNumber PhysicalNumber::operator+() const {
-    return PhysicalNumber(_num,_type);
+    return *(this);
 }
 const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
