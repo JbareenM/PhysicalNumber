@@ -16,15 +16,15 @@
 #include <vector>
 #include <algorithm>
 using namespace ariel;
-bool PhysicalNumber::checkType(const PhysicalNumber &a){
+bool PhysicalNumber::checkType(const PhysicalNumber &a) const{
     if(_type>=0 && _type<=2 && a._type>=0 && a._type<=2) return true;
     else if(_type>=3 && _type<=5 && a._type>=3 && a._type<=5) return true;
     else if(_type>=6 && _type<=8 && a._type>=6 && a._type<=8) return true;
     return false;
 }
-int PhysicalNumber::get_num(){return _num;}
-Unit PhysicalNumber::get_type(){return _type;}
-double PhysicalNumber::Diff(const PhysicalNumber &a){
+int PhysicalNumber::get_num() const{return _num;}
+Unit PhysicalNumber::get_type() const{return _type;}
+double PhysicalNumber::Diff(const PhysicalNumber &a) const{
     if(checkType(a)){
         switch (_type) {
             case KM:
@@ -80,114 +80,14 @@ double PhysicalNumber::Diff(const PhysicalNumber &a){
 }
 
 const PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& a) const{
-    if(this->_group!=a._group)
+    if(!checkType(a))
         throw "you're trying to add two different types!";
-    double res=a._num;
-    switch (_type) {
-        case KM:
-            if(a._type==KM) res*=1;
-            else if (a._type==M) res*=0.001;
-            else  res*=0.00001;
-            break;
-        case M:
-            if(a._type==KM) res*=1000;
-            else if (a._type==M) res*=1;
-            else res*=0.01;
-            break;
-        case CM:
-            if(a._type==KM) res*=1000*100;
-            else if (a._type==M) res*=100;
-            else res*=1;
-            break;
-        case HOUR:
-            if(a._type==HOUR) res*=1;
-            else if (a._type==MIN) res*=0.0166666667;
-            else res*=0.0002777778;
-            break;
-        case MIN:
-            if(a._type==HOUR) res*=60;
-            else if (a._type==MIN) res*=1;
-            else res*=0.0166666667;
-            break;
-        case SEC:
-            if(a._type==HOUR) res*=60*60;
-            else if (a._type==MIN) res*=60;
-            else res*=1;
-            break;
-        case TON:
-            if(a._type==TON) res*=1;
-            else if (a._type==KG) res*=0.001;
-            else res*=0.00001;
-            break;
-        case KG:
-            if(a._type==TON) res*=1000;
-            else if (a._type==KG) res*=1;
-            else res*=1000;
-            break;
-        case G:
-            if(a._type==TON) res*=1000*1000;
-            else if (a._type==KG) res*=1000;
-            else res*=1;
-            break;
-        default:
-            break;
-    }
-    return PhysicalNumber(_num+res,_type);
+    return PhysicalNumber(_num+Diff(a)*a._num,_type);
 }
 const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber& a) const{
-    if(this->_group!=a._group)
+    if(!checkType(a))
         throw "you're trying to add two different types!";
-    double res=a._num;
-    switch (_type) {
-        case KM:
-            if(a._type==KM) res*=1;
-            else if (a._type==M) res*=0.001;
-            else  res*=0.00001;
-            break;
-        case M:
-            if(a._type==KM) res*=1000;
-            else if (a._type==M) res*=1;
-            else res*=0.01;
-            break;
-        case CM:
-            if(a._type==KM) res*=1000*100;
-            else if (a._type==M) res*=100;
-            else res*=1;
-            break;
-        case HOUR:
-            if(a._type==HOUR) res*=1;
-            else if (a._type==MIN) res*=0.0166666667;
-            else res*=0.0002777778;
-            break;
-        case MIN:
-            if(a._type==HOUR) res*=60;
-            else if (a._type==MIN) res*=1;
-            else res*=0.0166666667;
-            break;
-        case SEC:
-            if(a._type==HOUR) res*=60*60;
-            else if (a._type==MIN) res*=60;
-            else res*=1;
-            break;
-        case TON:
-            if(a._type==TON) res*=1;
-            else if (a._type==KG) res*=0.001;
-            else res*=0.00001;
-            break;
-        case KG:
-            if(a._type==TON) res*=1000;
-            else if (a._type==KG) res*=1;
-            else res*=1000;
-            break;
-        case G:
-            if(a._type==TON) res*=1000*1000;
-            else if (a._type==KG) res*=1000;
-            else res*=1;
-            break;
-        default:
-            break;
-    }
-    return PhysicalNumber(_num-res,_type);
+    return PhysicalNumber(_num-Diff(a)*a._num,_type);
 }
 
 PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber& a){
@@ -213,21 +113,21 @@ const PhysicalNumber PhysicalNumber::operator+() const {
 const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
 }
-const bool PhysicalNumber::operator==(const PhysicalNumber& a){
+const bool PhysicalNumber::operator==(const PhysicalNumber& a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num==(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator<(const PhysicalNumber &a){
+const bool PhysicalNumber::operator<(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num<(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator>( const PhysicalNumber &a){
+const bool PhysicalNumber::operator>( const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num>(Diff(a)*a._num))
@@ -235,21 +135,21 @@ const bool PhysicalNumber::operator>( const PhysicalNumber &a){
     return false;
 }
 
-const bool PhysicalNumber::operator<=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator<=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num<=(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator>=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator>=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num>=(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator!=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator!=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num!=(Diff(a)*a._num))
