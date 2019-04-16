@@ -29,13 +29,13 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
         switch (_type) {
             case KM:
                 if(a._type==KM) return 1;
-                else if (a._type==M) return 0.001;
+                else if (a._type==M) return (double)1/1000;
                 else return 0.00001;
                 break;
             case M:
                 if(a._type==KM) return 1000;
                 else if (a._type==M) return 1;
-                else return 0.01;
+                else return (double)1/100;
                 break;
             case CM:
                 if(a._type==KM) return 1000*100;
@@ -44,13 +44,13 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
                 break;
             case HOUR:
                 if(a._type==HOUR) return 1;
-                else if (a._type==MIN) return 0.0166666667;
-                else return 0.0002777778;
+                else if (a._type==MIN) return (double)1/60;
+                else return (double)1/3600;
                 break;
             case MIN:
                 if(a._type==HOUR) return 60;
                 else if (a._type==MIN) return 1;
-                else return 0.0166666667;
+                else return (double)1/60;
                 break;
             case SEC:
                 if(a._type==HOUR) return 60*60;
@@ -59,8 +59,8 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
                 break;
             case TON:
                 if(a._type==TON) return 1;
-                else if (a._type==KG) return 0.001;
-                else return 0.00001;
+                else if (a._type==KG) return (double)1/1000;
+                else return (double)(1/(1000*1000));
                 break;
             case KG:
                 if(a._type==TON) return 1000;
@@ -78,7 +78,38 @@ double PhysicalNumber::Diff(const PhysicalNumber &a) const{
     }
     return 0;
 }
-
+double Diff(const PhysicalNumber &a){
+    switch (a.get_type()) {
+        case KM:
+            return 100000;
+            break;
+        case M:
+            return 100;
+            break;
+        case CM:
+            break;
+        case HOUR:
+            return 3600;
+            break;
+        case MIN:
+            return 60;
+            break;
+        case SEC:
+            break;
+        case TON:
+            return 1000000;
+            break;
+        case KG:
+            return 1000;
+            break;
+        case G:
+            break;
+        default:
+            return 1;
+            break;
+    }
+    return 1;
+}
 const PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber& a) const{
     if(!checkType(a))
         throw "you're trying to add two different types!";
@@ -116,7 +147,7 @@ const PhysicalNumber PhysicalNumber::operator-() const {
 const bool PhysicalNumber::operator==(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(_num==(Diff(a)*a._num))
+    if(::Diff(*(this))*_num==(::Diff(a)*a._num))
         return true;
     return false;
 }
@@ -148,13 +179,7 @@ const bool PhysicalNumber::operator>=(const PhysicalNumber &a) const{
         return true;
     return false;
 }
-const bool PhysicalNumber::operator!=(const PhysicalNumber &a) const{
-    if(!checkType(a))
-        throw "you're trying to comparee two different types!";
-    if(_num!=(Diff(a)*a._num))
-        return true;
-    return false;
-}
+const bool PhysicalNumber::operator!=(const PhysicalNumber &a) const{return !(*(this)==a);}
 PhysicalNumber& PhysicalNumber::operator++(){
     _num++;
     return *this;
