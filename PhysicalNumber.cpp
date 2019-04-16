@@ -113,45 +113,45 @@ const PhysicalNumber PhysicalNumber::operator+() const {
 const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
 }
-bool ariel::operator==(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator==(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()==(a.Diff(b)*b.get_num()))
+    if(_num==(Diff(a)*a._num))
         return true;
     return false;
 }
-bool ariel::operator<(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator<(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()<(a.Diff(b)*b.get_num()))
+    if(_num<(Diff(a)*a._num))
         return true;
     return false;
 }
-bool ariel::operator>(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator>(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()>(a.Diff(b)*b.get_num()))
+    if(_num>(Diff(a)*a._num))
         return true;
     return false;
 }
-bool ariel::operator<=(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator<=(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()<=(a.Diff(b)*b.get_num()))
+    if(_num<=(Diff(a)*a._num))
         return true;
     return false;
 }
-bool ariel::operator>=(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator>=(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()>=(a.Diff(b)*b.get_num()))
+    if(_num>=(Diff(a)*a._num))
         return true;
     return false;
 }
-bool ariel::operator!=(const PhysicalNumber &a,const PhysicalNumber &b){
-    if(!a.checkType(b))
+const bool PhysicalNumber::operator!=(const PhysicalNumber &a){
+    if(!checkType(a))
         throw "you're trying to comparee two different types!";
-    if(a.get_num()!=(a.Diff(b)*b.get_num()))
+    if(_num!=(Diff(a)*a._num))
         return true;
     return false;
 }
