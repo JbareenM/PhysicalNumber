@@ -113,42 +113,42 @@ const PhysicalNumber PhysicalNumber::operator+() const {
 const PhysicalNumber PhysicalNumber::operator-() const {
     return PhysicalNumber(-_num,_type);
 }
-const bool PhysicalNumber::operator==(const PhysicalNumber &a){
+const bool PhysicalNumber::operator==(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num==(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator<(const PhysicalNumber &a){
+const bool PhysicalNumber::operator<(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num<(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator>(const PhysicalNumber &a){
+const bool PhysicalNumber::operator>(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num>(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator<=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator<=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num<=(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator>=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator>=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num>=(Diff(a)*a._num))
         return true;
     return false;
 }
-const bool PhysicalNumber::operator!=(const PhysicalNumber &a){
+const bool PhysicalNumber::operator!=(const PhysicalNumber &a) const{
     if(!checkType(a))
         throw "you're trying to comparee two different types!";
     if(_num!=(Diff(a)*a._num))

@@ -36,14 +36,14 @@ namespace ariel{
         const PhysicalNumber operator+() const ;
         const PhysicalNumber operator-() const ;
         
-        const bool operator==(const PhysicalNumber &a);
-        const bool operator<(const PhysicalNumber &a);
+        const bool operator==(const PhysicalNumber &a) const;
+        const bool operator<(const PhysicalNumber &a) const;
         
-        const bool operator>(const PhysicalNumber &a);
+        const bool operator>(const PhysicalNumber &a) const;
         
-        const bool operator<=(const PhysicalNumber &a);
-        const bool operator>=(const PhysicalNumber &a);
-        const bool operator!=(const PhysicalNumber &a);
+        const bool operator<=(const PhysicalNumber &a) const;
+        const bool operator>=(const PhysicalNumber &a) const;
+        const bool operator!=(const PhysicalNumber &a) const;
         
         const PhysicalNumber operator++ (int);
         const PhysicalNumber operator--(int);
